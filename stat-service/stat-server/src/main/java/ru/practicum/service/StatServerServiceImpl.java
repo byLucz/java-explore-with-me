@@ -20,6 +20,7 @@ public class StatServerServiceImpl implements StatServerService {
     private final String pattern = "yyyy-MM-dd HH:mm:ss";
 
     @Override
+    @Transactional
     public void saveHit(EndpointHit hitDto) {
         LocalDateTime dateTime = LocalDateTime.parse(hitDto.getTimestamp(), DateTimeFormatter.ofPattern(pattern));
         repository.save(new Hits(null, hitDto.getApp(), hitDto.getUri(), hitDto.getIp(), dateTime));

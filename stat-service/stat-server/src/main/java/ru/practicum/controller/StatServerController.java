@@ -37,7 +37,6 @@ public class StatServerController {
 
         LocalDateTime dateTimeStart = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime dateTimeEnd = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
         if (dateTimeStart.isAfter(dateTimeEnd)) {
             throw new ValidationException("Дата начала не может быть позже даты окончания.");
         }

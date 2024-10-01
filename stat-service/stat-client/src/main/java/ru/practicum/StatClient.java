@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class StatClient {
     private final RestTemplate rest;
-    @Value("http://localhost:9090")
+    @Value("${stat-client.url}")
     private String statServerUrl;
 
     public void addHit(EndpointHit hitDto) {
