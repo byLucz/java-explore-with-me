@@ -1,14 +1,20 @@
 services:
-  stats-server:
+  statz-server:
+    build: stat-service/stat-server
     ports:
       - "9090:9090"
+    depends_on:
+      - statz-db
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://statz-db:5432/explore-with-me
+        SPRING_DATASOURCE_USERNAME: dbuser
+        SPRING_DATASOURCE_PASSWORD: 12345
 
-  stats-db:
+  statz-db:
     image: postgres:16.1
-
-  ewm-service:
     ports:
-      - "8080:8080"
-
-  ewm-db:
-    image: postgres:16.1
+      - "6541:5432"
+    environment:
+        - POSTGRES_DB=explore-with-me
+        - POSTGRES_USER=dbuser
+        - POSTGRES_PASSWORD=12345
