@@ -661,7 +661,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserDto"
+                    "$ref": "#/components/schemas/UserDTO"
                   }
                 }
               }
@@ -708,7 +708,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/UserDTO"
                 }
               }
             },
@@ -2783,7 +2783,7 @@
         },
         "description": "Данные для изменения информации о событии. Если поле в запросе не указано (равно null) - значит изменение этих данных не треубется."
       },
-      "UserDto": {
+      "UserDTO": {
         "required": [
           "email",
           "name"
