@@ -37,6 +37,7 @@ public class StatClient {
 
         return response.getBody();
     }
+
     public void saveStat(EndpointHit hit) {
         String resp = WebClient.builder()
                 .baseUrl(statServerUrl)
