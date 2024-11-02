@@ -135,7 +135,7 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<EventShortDto> getUserEvents(int userId, int from, int size) {
         Pageable pageable = PageRequest.of(from / size, size);
-        List<EventFullDto> fullEventsDtoNoViews = eventRepository.findallbyinitiatorId(userId, pageable)
+        List<EventFullDto> fullEventsDtoNoViews = eventRepository.findAllByInitiatorId(userId, pageable)
                 .stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
         return addStatsAndConvertToShortDto(fullEventsDtoNoViews);
     }

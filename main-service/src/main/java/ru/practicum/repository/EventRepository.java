@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
-    Page<Event> findallbyinitiatorId(int userId, Pageable pageable);
+    Page<Event> findAllByInitiatorId(int userId, Pageable pageable);
 
     @Query("SELECT e FROM Event AS e " +
             "WHERE (e.state = :state) " +
