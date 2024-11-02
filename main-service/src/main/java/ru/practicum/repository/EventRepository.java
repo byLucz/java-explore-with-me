@@ -19,7 +19,7 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
             "WHERE e.state = :state " +
             "AND ((LOWER(e.annotation) LIKE CONCAT('%', :text, '%') " +
             "OR LOWER(e.description) LIKE CONCAT('%', :text, '%')) OR :text IS NULL) " +
-            "AND (e.categoryId IN :category OR :category IS NULL) " +
+            "AND (e.category.id IN :category OR :category IS NULL) " +
             "AND (e.paid = :paid OR :paid IS NULL) " +
             "AND (e.eventDate BETWEEN :start AND :end) " +
             "ORDER BY e.eventDate")
@@ -33,7 +33,7 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Query("SELECT e FROM Event e " +
             "WHERE (e.initiator.id IN :users OR :users IS NULL) " +
             "AND (e.state IN :states OR :states IS NULL) " +
-            "AND (e.categoryId IN :category OR :category IS NULL) " +
+            "AND (e.category.id IN :category OR :category IS NULL) " +
             "AND (e.eventDate BETWEEN :start AND :end)")
     Page<Event> findByParametersForAdmin(@Param("users") List<Integer> users,
                                          @Param("states") List<EventStates> states,
@@ -41,5 +41,3 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
                                          @Param("start") LocalDateTime rangeStart,
                                          @Param("end") LocalDateTime rangeEnd, Pageable pageable);
 }
-
-
