@@ -1,22 +1,25 @@
 package ru.practicum;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class StatClient {
-    private final RestTemplate rest;
     @Value("${stat-client.url}")
     private String statServerUrl;
+    private final RestTemplate rest;
 
     public void addHit(EndpointHit hitDto) {
         rest.postForLocation(statServerUrl + "/hit", hitDto);
@@ -33,5 +36,17 @@ public class StatClient {
                 start, end, urisToSend, unique);
 
         return response.getBody();
+    }
+    public void saveStat(EndpointHit hit) {
+        String resp = WebClient.builder()
+                .baseUrl(statServerUrl)
+                .build()
+                .post()
+                .uri("/hit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(hit), EndpointHit.class)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 }
