@@ -9,8 +9,7 @@ import ru.practicum.model.compilation.Compilation;
 
 public interface CompilationRepository extends JpaRepository<Compilation, Integer> {
 
-    @Query("SELECT c FROM Compilation AS c " +
+    @Query("SELECT c FROM Compilation c " +
             "WHERE (CAST(c.pinned AS boolean) = :pinned OR :pinned IS NULL)")
-    Page<Compilation> findByPinnedForPublic(@Param("pinned") Boolean pinned,
-                                            Pageable pageable);
+    Page<Compilation> findByPinnedForPublic(@Param("pinned") Boolean pinned, Pageable pageable);
 }

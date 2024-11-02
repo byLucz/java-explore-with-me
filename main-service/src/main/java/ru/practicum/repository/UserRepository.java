@@ -10,9 +10,11 @@ import ru.practicum.model.user.User;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("SELECT u FROM User AS u " +
-            "WHERE (u.id IN :ids OR :ids IS NULL)")
+
+    @Query("SELECT u FROM Users u " +
+            "WHERE (u.userId IN :ids OR :ids IS NULL)")
     Page<User> findUsersForAdmin(@Param("ids") List<Integer> ids, Pageable pageable);
 
     List<User> findAllByEmail(String email);
 }
+
