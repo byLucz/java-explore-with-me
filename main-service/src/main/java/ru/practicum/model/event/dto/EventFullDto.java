@@ -23,8 +23,8 @@ public class EventFullDto {
     private LocationDto location;
     private Boolean paid;
     private int participantLimit;
-    private String publishedOn;
-    private Boolean requestModeration;
+    private String published;
+    private Boolean checkinRequests;
     private String state;
     private String title;
     private int views;

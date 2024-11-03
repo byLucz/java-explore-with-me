@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "CATEGORIES")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,7 +12,6 @@ import lombok.*;
 @ToString
 public class Category {
     @Id
-    @Column(name = "categoryId", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;

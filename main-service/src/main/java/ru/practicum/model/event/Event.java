@@ -14,47 +14,48 @@ import ru.practicum.enums.EventStates;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "EVENTS", schema = "PUBLIC")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
     @Id
-    @Column(name = "eventId", nullable = false)
+    @Column(name = "EVENT_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false, length = 2000)
     private String annotation;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "CATEGORY_ID")
     private Category category;
-    @Column(name = "created", nullable = false)
+    @Column(name = "CREATED", nullable = false)
     private LocalDateTime created;
     @Column(nullable = false, length = 7000)
     private String description;
-    @Column(name = "eventDate", nullable = false)
+    @Column(name = "EVENT_DATE", nullable = false)
     private LocalDateTime eventDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "initiatorId")
+    @JoinColumn(name = "INITIATOR_ID")
     private User initiator;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "locationId")
+    @JoinColumn(name = "LOCATION_ID")
     private Location location;
     @Column(nullable = false)
     @Convert(converter = NumericBooleanConverter.class)
     private Boolean paid;
-    @Column(name = "limits", nullable = false)
+    @Column(name = "PARTICIPANT_LIMIT", nullable = false)
     private int participantLimit;
-    @Column(name = "modRequests", nullable = false)
+    @Column(name = "CONFIRMED_REQUESTS", nullable = false)
     private Integer confirmedRequests;
-    @Column(name = "published")
+    @Column(name = "PUBLISHED")
     private LocalDateTime published;
-    @Column(name = "unmodRequests", nullable = false)
+    @Column(name = "CHECKIN_REQUESTS", nullable = false)
     @Convert(converter = NumericBooleanConverter.class)
-    private Boolean requestModeration;
+    private Boolean checkinRequests;
     @Enumerated(EnumType.ORDINAL)
     private EventStates state;
     @Column(nullable = false)

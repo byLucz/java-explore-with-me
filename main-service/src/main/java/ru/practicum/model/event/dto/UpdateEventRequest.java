@@ -20,7 +20,7 @@ public class UpdateEventRequest {
     private Boolean paid;
     @PositiveOrZero
     private Integer participantLimit;
-    private Boolean requestModeration;
+    private Boolean checkinRequests;
     private String stateAction;
     @Size(min = 3, max = 120)
     private String title;

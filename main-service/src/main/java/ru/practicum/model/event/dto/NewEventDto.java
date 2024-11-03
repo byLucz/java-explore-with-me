@@ -27,7 +27,7 @@ public class NewEventDto {
     private Boolean paid;
     @PositiveOrZero
     private int participantLimit;
-    private Boolean requestModeration;
+    private Boolean checkinRequests;
     @NotBlank
     @Size(min = 3, max = 120)
     private String title;

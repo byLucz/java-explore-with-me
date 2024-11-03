@@ -120,7 +120,7 @@ public class EventService {
         Optional.ofNullable(request.getLocation()).ifPresent(location -> updateLocation(event, location));
         Optional.ofNullable(request.getPaid()).ifPresent(event::setPaid);
         Optional.ofNullable(request.getParticipantLimit()).ifPresent(event::setParticipantLimit);
-        Optional.ofNullable(request.getRequestModeration()).ifPresent(event::setRequestModeration);
+        Optional.ofNullable(request.getCheckinRequests()).ifPresent(event::setCheckinRequests);
         Optional.ofNullable(request.getTitle()).ifPresent(event::setTitle);
         return EventMapper.toEventFullDto(eventRepository.save(event));
     }
@@ -135,7 +135,7 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<EventShortDto> getUserEvents(int userId, int from, int size) {
         Pageable pageable = PageRequest.of(from / size, size);
-        List<EventFullDto> fullEventsDtoNoViews = eventRepository.findAllByInitiatorId(userId, pageable)
+        List<EventFullDto> fullEventsDtoNoViews = eventRepository.findAllByInitiator_Id(userId, pageable)
                 .stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
         return addStatsAndConvertToShortDto(fullEventsDtoNoViews);
     }

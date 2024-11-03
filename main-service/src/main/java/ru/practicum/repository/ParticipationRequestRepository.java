@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ParticipationRequestRepository extends JpaRepository<ParticipationRequest, Integer> {
 
+    ParticipationRequest findOneByEvent_IdAndRequester_Id(int eventId, int requesterId);
+
     List<ParticipationRequest> findAllByIdIn(List<Integer> requestIds);
 
-    List<ParticipationRequest> findAllByRequesterId(int requesterId);
+    List<ParticipationRequest> findAllByRequester_Id(int requesterId);
 
-    List<ParticipationRequest> findAllByEventId(int eventId);
-
-    ParticipationRequest findOneByEventIdAndRequesterId(int eventId, int requesterId);
+    List<ParticipationRequest> findAllByEvent_Id(int eventId);
 }

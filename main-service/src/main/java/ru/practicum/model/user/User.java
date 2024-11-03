@@ -9,14 +9,14 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "Users")
+@Table(name = "USERS")
 public class User {
     @Id
-    @Column(name = "userId", nullable = false)
+    @Column(name = "USER_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 }

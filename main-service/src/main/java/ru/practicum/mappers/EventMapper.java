@@ -27,7 +27,7 @@ public class EventMapper {
                 newEventDto.getParticipantLimit() != 0 ? newEventDto.getParticipantLimit() : 0,
                 0,
                 LocalDateTime.now(),
-                newEventDto.getRequestModeration() != null ? newEventDto.getRequestModeration() : true,
+                newEventDto.getCheckinRequests() != null ? newEventDto.getCheckinRequests() : true,
                 EventStates.PENDING,
                 newEventDto.getTitle() != null ? newEventDto.getTitle() : ""
         );
@@ -47,7 +47,7 @@ public class EventMapper {
                 event.getPaid(),
                 event.getParticipantLimit(),
                 event.getPublished().format(Constants.DATE_TIME_FORMAT),
-                event.getRequestModeration(),
+                event.getCheckinRequests(),
                 event.getState().toString(),
                 event.getTitle(),
                 0

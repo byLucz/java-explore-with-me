@@ -11,13 +11,14 @@ import ru.practicum.model.event.Event;
 import java.util.Set;
 
 @Entity
+@Table(name = "COMPILATIONS", schema = "PUBLIC")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Compilation {
     @Id
-    @Column(name = "compilationId", nullable = false)
+    @Column(name = "COMPILATION_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
@@ -26,8 +27,8 @@ public class Compilation {
     @Convert(converter = NumericBooleanConverter.class)
     private Boolean pinned;
     @ManyToMany
-    @JoinTable(name = "EventCompilation",
-            joinColumns = @JoinColumn(name = "compilationId"),
-            inverseJoinColumns = @JoinColumn(name = "eventId"))
+    @JoinTable(name = "EVENT_COMPILATIONS",
+            joinColumns = @JoinColumn(name = "COMPILATION_ID"),
+            inverseJoinColumns = @JoinColumn(name = "EVENT_ID"))
     private Set<Event> events;
 }

@@ -11,9 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "LOCATIONS", schema = "PUBLIC")
 public class Location {
     @Id
-    @Column(name = "locationId", nullable = false)
+    @Column(name = "LOCATION_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)

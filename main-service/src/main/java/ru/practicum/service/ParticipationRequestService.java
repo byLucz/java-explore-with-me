@@ -48,7 +48,7 @@ public class ParticipationRequestService {
             throw new UnreachableEWMException("Достигнут предел количества участников");
         }
         RequestStates requestStates = RequestStates.PENDING;
-        if (!event.getRequestModeration() || event.getParticipantLimit() == 0) {
+        if (!event.getCheckinRequests() || event.getParticipantLimit() == 0) {
             requestStates = RequestStates.CONFIRMED;
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
             eventService.save(event);
@@ -82,7 +82,7 @@ public class ParticipationRequestService {
     @Transactional(readOnly = true)
     public List<ParticipationRequestDto> getUserRequests(int userId) {
         userService.getUser(userId).getId();
-        return participationRequestRepository.findAllByRequesterId(userId).stream()
+        return participationRequestRepository.findAllByRequester_Id(userId).stream()
                 .map(ParticipationRequestMapper::toParticipationRequestDto)
                 .collect(Collectors.toList());
     }
@@ -93,7 +93,7 @@ public class ParticipationRequestService {
         if (userId != initiatorId) {
             throw new BadRequestEWMException("События пользователя не найдено");
         }
-        return participationRequestRepository.findAllByEventId(eventId).stream()
+        return participationRequestRepository.findAllByEvent_Id(eventId).stream()
                 .map(ParticipationRequestMapper::toParticipationRequestDto)
                 .collect(Collectors.toList());
     }
@@ -105,7 +105,7 @@ public class ParticipationRequestService {
 
     @Transactional(readOnly = true)
     public ParticipationRequest getRequestByEventAndRequester(int eventId, int requesterId) {
-        return participationRequestRepository.findOneByEventIdAndRequesterId(eventId, requesterId);
+        return participationRequestRepository.findOneByEvent_IdAndRequester_Id(eventId, requesterId);
     }
 
     @Transactional
@@ -115,7 +115,7 @@ public class ParticipationRequestService {
         Event event = eventService.getEvent(eventId);
         List<Integer> requestIds = eventRequestStatusUpdateRequest.getRequestIds();
         List<ParticipationRequest> participationRequests = getRequestByIds(requestIds);
-        if (event.getParticipantLimit() == 0 || !event.getRequestModeration()) {
+        if (event.getParticipantLimit() == 0 || !event.getCheckinRequests()) {
             event.setConfirmedRequests(event.getConfirmedRequests() + participationRequests.size());
             eventService.save(event);
             List<ParticipationRequestDto> participationRequestsDto = participationRequests.stream()
