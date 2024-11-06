@@ -5,7 +5,9 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.practicum.StatServerService;
 import ru.practicum.EndpointHit;
 import ru.practicum.StatsView;
@@ -20,6 +22,7 @@ public class StatServerController {
     private final StatServerService statServ;
 
     @PostMapping("/hit")
+    @ResponseStatus(HttpStatus.CREATED)
     public void saveNewHit(@Valid @RequestBody EndpointHit hit) {
         log.info("Получен запрос на сохранение нового просмотра '{}'", hit);
         statServ.saveHit(hit);
@@ -35,7 +38,7 @@ public class StatServerController {
         log.info("Получен запрос на получение статистики: start={}, end={}, uris={}, unique={}", start, end, uris, unique);
 
         if (start.isAfter(end)) {
-            throw new ValidationException("Дата начала не может быть позже даты окончания.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Дата начала не может быть позже даты окончания.");
         }
 
         return statServ.getStats(start, end, uris, unique);
