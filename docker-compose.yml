@@ -1,20 +1,44 @@
 services:
-  statz-server:
+  statewm-server:
     build: stat-service/stat-server
     ports:
       - "9090:9090"
     depends_on:
-      - statz-db
+      - statewm-db
     environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://statz-db:5432/explore-with-me
-        SPRING_DATASOURCE_USERNAME: dbuser
-        SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_DATASOURCE_URL: jdbc:postgresql://statewm-db:5432/explore-with-me
+      SPRING_DATASOURCE_USERNAME: dbuser
+      SPRING_DATASOURCE_PASSWORD: 12345
 
-  statz-db:
+  statewm-db:
     image: postgres:16.1
     ports:
-      - "6541:5432"
+      - "5435:5432"
     environment:
-        - POSTGRES_DB=explore-with-me
-        - POSTGRES_USER=dbuser
-        - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=explore-with-me
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=12345
+
+  mainewm-server:
+    build:
+      context: ./main-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://mainewm-db:5432/main
+      - SPRING_DATASOURCE_USERNAME=dbuser
+      - SPRING_DATASOURCE_PASSWORD=12345
+      - STAT_SERVER_URL=http://statewm-server:9090
+    depends_on:
+      - statewm-db
+      - mainewm-db
+
+  mainewm-db:
+    image: postgres:16.1
+    ports:
+      - "6542:5432"
+    environment:
+      - POSTGRES_DB=main
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=12345
