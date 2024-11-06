@@ -448,10 +448,10 @@ public class EventServiceImpl implements EventService {
         List<String> url = events.stream()
                 .map(event -> "/events/" + event.getId())
                 .toList();
-        Optional<List<StatsView>> StatsView = Optional.ofNullable(statClient
+        Optional<List<StatsView>> statsView = Optional.ofNullable(statClient
                 .getStat(LocalDateTime.now().minusYears(20), LocalDateTime.now(), url, true)
         );
-        return StatsView.orElse(Collections.emptyList());
+        return statsView.orElse(Collections.emptyList());
     }
 
     private void setViews(List<Event> events) {
