@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users, categories, location, events, requests, compilations, compilations_events;
+DROP TABLE IF EXISTS users, categories, location, events, requests, compilations, compilations_events, comments;
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -59,4 +59,15 @@ CREATE TABLE IF NOT EXISTS compilations_events
 (
     compilation_id BIGINT REFERENCES compilations (id),
     event_id       BIGINT REFERENCES events (id)
+);
+
+CREATE TABLE IF NOT EXISTS comments
+(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    text VARCHAR(500) NOT NULL,
+    created TIMESTAMP NOT NULL,
+    event_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    FOREIGN KEY (event_id) REFERENCES events(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
