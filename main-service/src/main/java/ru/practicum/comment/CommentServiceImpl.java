@@ -31,16 +31,18 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentDto addComment(Long eventId, Long userId, String text) {
+    public CommentDto addComment(Long eventId, CommentDto commentDto) {
+        log.info("Добавление комментария пользователем с ID {} к событию с ID {}", commentDto.getAuthorId(), eventId);
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event not found"));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
-        CommentDto commentDto = new CommentDto();
-        commentDto.setText(text);
-        commentDto.setAuthorId(userId);
-        commentDto.setEventId(eventId);
+                .orElseThrow(() -> {
+                    log.error("Событие с ID {} не найдено", eventId);
+                    return new NotFoundException("Событие не найдено");
+                });
+        User user = userRepository.findById(commentDto.getAuthorId())
+                .orElseThrow(() -> {
+                    log.error("Пользователь с ID {} не найден", commentDto.getAuthorId());
+                    return new NotFoundException("Пользователь не найден");
+                });
 
         Comment comment = commentMapper.commentDtoToComment(commentDto);
         comment.setAuthor(user);
@@ -48,13 +50,16 @@ public class CommentServiceImpl implements CommentService {
         comment.setCreated(LocalDateTime.now());
 
         Comment savedComment = commentRepository.save(comment);
+        log.info("Комментарий с ID {} успешно добавлен", savedComment.getId());
         return commentMapper.commentToCommentDto(savedComment);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<CommentDto> getCommentsByEvent(Long eventId) {
+        log.info("Получение комментариев для события с ID {}", eventId);
         List<Comment> comments = commentRepository.findByEventId(eventId);
+        log.info("Найдено {} комментариев для события с ID {}", comments.size(), eventId);
         return comments.stream()
                 .map(commentMapper::commentToCommentDto)
                 .collect(Collectors.toList());
@@ -62,11 +67,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CommentDto> getCommentsByUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-
-        List<Comment> comments = commentRepository.findByAuthorId(userId);
+    public List<CommentDto> getCommentsByUser(Long authorId) {
+        log.info("Получение комментариев пользователя с ID {}", authorId);
+        List<Comment> comments = commentRepository.findByAuthorId(authorId);
+        log.info("Найдено {} комментариев от пользователя с ID {}", comments.size(), authorId);
         return comments.stream()
                 .map(commentMapper::commentToCommentDto)
                 .collect(Collectors.toList());
@@ -74,15 +78,20 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void deleteComment(Long commentId, Long userId) {
+    public void deleteComment(Long commentId, Long authorId) {
+        log.info("Удаление комментария с ID {} пользователем с ID {}", commentId, authorId);
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException("Comment not found"));
+                .orElseThrow(() -> {
+                    log.error("Комментарий с ID {} не найден", commentId);
+                    return new NotFoundException("Комментарий не найден");
+                });
 
-        if (!comment.getAuthor().getId().equals(userId)) {
-            throw new IntegrityViolationException("You can only delete your own comments");
+        if (!comment.getAuthor().getId().equals(authorId)) {
+            log.error("Пользователь с ID {} не может удалить комментарий с ID {}", authorId, commentId);
+            throw new IntegrityViolationException("Вы можете удалять только свои комментарии");
         }
 
         commentRepository.delete(comment);
+        log.info("Комментарий с ID {} успешно удален", commentId);
     }
 }
-

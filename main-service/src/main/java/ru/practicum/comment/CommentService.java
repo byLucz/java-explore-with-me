@@ -5,7 +5,7 @@ import ru.practicum.comment.dto.CommentDto;
 import java.util.List;
 
 public interface CommentService {
-    CommentDto addComment(Long eventId, Long userId, String text);
+    CommentDto addComment(Long eventId, CommentDto commentDto);
 
     List<CommentDto> getCommentsByEvent(Long eventId);
 

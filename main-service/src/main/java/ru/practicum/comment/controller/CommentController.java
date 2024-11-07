@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users/{userId}/comments")
+@RequestMapping(path = "/users/comments")
 public class CommentController {
 
     private final CommentService commentService;
@@ -20,11 +20,10 @@ public class CommentController {
     @PostMapping("/{eventId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CommentDto> addComment(
-            @PathVariable Long userId,
             @PathVariable Long eventId,
             @Valid @RequestBody CommentDto commentDto) {
 
-        CommentDto createdComment = commentService.addComment(eventId, userId, commentDto.getText());
+        CommentDto createdComment = commentService.addComment(eventId, commentDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
@@ -36,10 +35,10 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(
-            @PathVariable Long userId,
-            @PathVariable Long commentId) {
+            @PathVariable Long commentId,
+            @RequestBody CommentDto commentDto) {
 
-        commentService.deleteComment(commentId, userId);
+        commentService.deleteComment(commentId, commentDto.getAuthorId());
         return ResponseEntity.noContent().build();
     }
 

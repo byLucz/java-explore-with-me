@@ -1,5 +1,6 @@
 package ru.practicum.comment.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentDto {
     Long id;
+    @NotBlank
     String text;
     LocalDateTime created;
     Long authorId;

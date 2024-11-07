@@ -17,4 +17,3 @@ public interface CommentMapper {
     @Mapping(target = "created", ignore = true)
     Comment commentDtoToComment(CommentDto commentDto);
 }
-
