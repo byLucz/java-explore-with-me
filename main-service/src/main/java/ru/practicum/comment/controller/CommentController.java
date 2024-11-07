@@ -27,7 +27,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
-    @GetMapping
+    @GetMapping("/{userId}")
     public ResponseEntity<List<CommentDto>> getCommentsByUser(@PathVariable Long userId) {
         List<CommentDto> commentDtos = commentService.getCommentsByUser(userId);
         return ResponseEntity.ok(commentDtos);

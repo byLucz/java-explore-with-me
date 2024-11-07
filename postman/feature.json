@@ -141,20 +141,9 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{baseUrl}}/users/comments?authorId={{authorId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "users",
-            "comments"
-          ],
-          "query": [
-            {
-              "key": "authorId",
-              "value": "{{authorId}}"
-            }
-          ]
+          "raw": "{{baseUrl}}/users/comments/{{authorId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "comments", "{{authorId}}"]
         }
       },
       "event": [
@@ -169,6 +158,7 @@
               "pm.test(\"Ответ должен содержать массив комментариев\", function () {",
               "    var jsonData = pm.response.json();",
               "    pm.expect(jsonData).to.be.an('array');",
+              "    pm.expect(jsonData.length).to.be.above(0);",
               "});"
             ],
             "type": "text/javascript"
